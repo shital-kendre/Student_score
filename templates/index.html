@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Score Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; }
+        form { width: 300px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 15px; padding: 10px; width: 100%; }
+        .result { margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <form id="scoreForm" action="/get_score" method="POST">
+        <h2>Student Score Prediction</h2>
+        
+        <!-- Input fields -->
+        <label for="Hours_Studied">Hours Studied</label>
+        <input type="number" id="Hours_Studied" name="Hours_Studied" step="0.1" required>
+
+        <label for="Attendance">Attendance (%)</label>
+        <input type="number" id="Attendance" name="Attendance" required>
+
+        <label for="Sleep_Hours">Sleep Hours</label>
+        <input type="number" id="Sleep_Hours" name="Sleep_Hours" step="0.1" required>
+
+        <label for="Previous_Scores">Previous Scores</label>
+        <input type="number" id="Previous_Scores" name="Previous_Scores" required>
+
+        <label for="Tutoring_Sessions">Tutoring Sessions</label>
+        <input type="number" id="Tutoring_Sessions" name="Tutoring_Sessions" required>
+
+        <label for="Physical_Activity">Physical Activity</label>
+        <input type="number" id="Physical_Activity" name="Physical_Activity" required>
+
+        <!-- Categorical fields mapped from JSON -->
+        <label for="Parental_Involvement">Parental Involvement</label>
+        <select id="Parental_Involvement" name="Parental_Involvement">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <label for="Access_to_Resources">Access to Resources</label>
+        <select id="Access_to_Resources" name="Access_to_Resources">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <label for="Extracurricular_Activities">Extracurricular Activities</label>
+        <select id="Extracurricular_Activities" name="Extracurricular_Activities">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label for="Motivation_Level">Motivation Level</label>
+        <select id="Motivation_Level" name="Motivation_Level">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <label for="Internet_Access">Internet Access</label>
+        <select id="Internet_Access" name="Internet_Access">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+
+        <label for="Family_Income">Family Income</label>
+        <select id="Family_Income" name="Family_Income">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <label for="Teacher_Quality">Teacher Quality</label>
+        <select id="Teacher_Quality" name="Teacher_Quality">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <label for="School_Type">School Type</label>
+        <select id="School_Type" name="School_Type">
+            <option value="Private">Private</option>
+            <option value="Public">Public</option>
+        </select>
+
+        <label for="Peer_Influence">Peer Influence</label>
+        <select id="Peer_Influence" name="Peer_Influence">
+            <option value="Negative">Negative</option>
+            <option value="Neutral">Neutral</option>
+            <option value="Positive">Positive</option>
+        </select>
+
+        <label for="Learning_Disabilities">Learning Disabilities</label>
+        <select id="Learning_Disabilities" name="Learning_Disabilities">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+
+        <label for="Parental_Education_Level">Parental Education Level</label>
+        <select id="Parental_Education_Level" name="Parental_Education_Level">
+            <option value="High School">High School</option>
+            <option value="College">College</option>
+            <option value="Postgraduate">Postgraduate</option>
+        </select>
+
+        <label for="Distance_from_Home">Distance from Home</label>
+        <select id="Distance_from_Home" name="Distance_from_Home">
+            <option value="Near">Near</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Far">Far</option>
+        </select>
+
+        <label for="Gender">Gender</label>
+        <select id="Gender" name="Gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <button type="submit">Predict Score</button>
+    </form>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        document.getElementById("scoreForm").onsubmit = async function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(event.target);
+
+            // Send POST request to /get_score endpoint
+            let response = await fetch(event.target.action, {
+                method: event.target.method,
+                body: formData
+            });
+
+            let result = await response.json();
+            document.getElementById("result").textContent = "Predicted Score: " + result["Predicted student score"];
+        };
+    </script>
+
+</body>
+</html>
